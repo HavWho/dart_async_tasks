@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   var links = <String>[];
@@ -14,11 +14,11 @@ void main() async {
   files.add(File("image3.jpg"));
   files.add(File("image4.jpg"));
 
-  for (var i = 0; i < links.length; i++) {
-    Response response = await get(Uri.parse(links.elementAt(i)));
-    files.elementAt(i).writeAsBytes(response.bodyBytes);
-    if (i == 3) {
-      print("Complete!");
-    }
-  }
+  var results = await Future.wait([
+    http.get(Uri.parse(links[0])).then((value) => files.elementAt(0).writeAsBytes(value.bodyBytes)),
+    http.get(Uri.parse(links[1])).then((value) => files.elementAt(1).writeAsBytes(value.bodyBytes)),
+    http.get(Uri.parse(links[2])).then((value) => files.elementAt(2).writeAsBytes(value.bodyBytes)),
+    http.get(Uri.parse(links[3])).then((value) => files.elementAt(3).writeAsBytes(value.bodyBytes)),
+  ]).then((value) => print("Completed!"));
+  
 }
