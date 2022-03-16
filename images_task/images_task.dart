@@ -14,7 +14,7 @@ void main() async {
   files.add(File("image3.jpg"));
   files.add(File("image4.jpg"));
 
-  var results = await Future.wait([
+  await Future.wait([
     http.get(Uri.parse(links[0])).then((value) => files.elementAt(0).writeAsBytes(value.bodyBytes)),
     http.get(Uri.parse(links[1])).then((value) => files.elementAt(1).writeAsBytes(value.bodyBytes)),
     http.get(Uri.parse(links[2])).then((value) => files.elementAt(2).writeAsBytes(value.bodyBytes)),
